@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>demo01</title>
+</head>
+
+<body>
+
+    <!-- coponents and props demo -->
+    <div id="root"></div>
+
+    <script src="https://unpkg.com/react@16.4.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+    <!-- <script src="https://unpkg.com/react@16.4.0/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.26.0/babel.min.js"></script> -->
+
+    <script type="text/babel">
+        const name = 'React';
+        const element = <h1>Hello, {name}</h1>;
+
+        function Hello(props) {
+            return <h1>Hello, {props.name}</h1>;
+        }
+
+        class Welcome extends React.Component {
+            render() {
+                return <h1>Hello, {this.props.name}</h1>;
+            }
+        }
+
+        function App() {
+            return (
+                <div>
+                    {element}
+                    <Hello name="shaoda" />
+                    <Welcome name="dshao" />
+                </div>
+            );
+        }
+
+        ReactDOM.render(
+            <App />,
+            document.getElementById('root')
+        );
+    </script>
+</body>
+
+</html>
