@@ -48,6 +48,7 @@
                 // this.state.date = new Date();
             }
 
+            // count = (e) => {
             count(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -61,12 +62,24 @@
                 // })
             }
 
+            times(num, e) {
+                e.preventDefault()
+                e.stopPropagation()
+
+                this.setState((prevState) => ({
+                    counter: prevState.counter * num
+                }))
+            }
+
             render() {
                 return (
                     <div>
                         <h1>Hello, world!</h1>
                         <h2>It is {this.state.date.toLocaleTimeString()}.</h2>
-                        <button onClick={this.count}>{this.state.counter} times</button>
+                        count: {this.state.counter}
+                        <button onClick={this.count}>+1</button>
+                        <button onClick={this.times.bind(this, 2)}>x2</button>
+                        <button onClick={(e) => this.times(3, e)}>x3</button>
                     </div>
                 );
             }
