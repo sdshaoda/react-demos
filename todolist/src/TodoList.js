@@ -8,7 +8,7 @@ class TodoList extends Component {
     super(props);
 
     this.state = store.getState();
-    this.input = null;
+    this.input = React.createRef();
 
     store.subscribe(() => {
       this.setState(store.getState());
@@ -27,7 +27,7 @@ class TodoList extends Component {
   }
 
   addTodo = () => {
-    if (!this.input.props.value) {
+    if (!this.input.current.props.value) {
       return
     }
     const action = creators['addTodoAction']();
@@ -42,7 +42,7 @@ class TodoList extends Component {
   render() {
     return (
       <div className="todo-list">
-        <Input className="input" ref={el => this.input = el} placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
+        <Input className="input" ref={this.input} placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
         <Button type="primary" onClick={this.addTodo}>添加</Button>
         <List
           className="list"
