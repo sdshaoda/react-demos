@@ -1,8 +1,23 @@
 const defaultState = {
-  inputValue: '111',
-  todolist: [1]
+  inputValue: '',
+  todolist: []
 };
 
 export default (state = defaultState, action) => {
-  return state;
+  const newState = JSON.parse(JSON.stringify(state));
+  switch (action.type) {
+    case 'change_input_value':
+      newState.inputValue = action.value;
+      break;
+    case 'add_todo':
+      newState.todolist.push(state.inputValue)
+      newState.inputValue = ''
+      break;
+    case 'delete_todo':
+      newState.todolist.splice(action.value, 1)
+      break;
+    default:
+      break;
+  }
+  return newState;
 }

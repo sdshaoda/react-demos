@@ -7,31 +7,54 @@ class TodoList extends Component {
     super(props);
 
     this.state = store.getState();
+
+    store.subscribe(this.storeChange);
+  }
+
+  storeChange = () => {
+    this.setState(store.getState());
   }
 
   inputChange = (e) => {
-    console.log(e.target.value)
+    const action = {
+      type: 'change_input_value',
+      value: e.target.value
+    };
+    store.dispatch(action);
+  }
+
+  keydown = (e) => {
+    if (e.keyCode === 13) {
+      this.addTodo()
+    }
   }
 
   addTodo = () => {
-    console.log('add todo')
+    const action = {
+      type: 'add_todo'
+    };
+    store.dispatch(action);
   }
 
-  deleteTodo = (item) => {
-    console.log(item)
+  deleteTodo = (item, index) => {
+    const action = {
+      type: 'delete_todo',
+      value: index
+    };
+    store.dispatch(action);
   }
 
   render() {
     return (
       <div className="todo-list">
-        <Input className="input" placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} />
+        <Input className="input" placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
         <Button type="primary" onClick={this.addTodo}>添加</Button>
         <List
           className="list"
           bordered
           dataSource={this.state.todolist}
-          renderItem={item => (
-            <List.Item extra={<Icon type="close" theme="outlined" onClick={this.deleteTodo.bind(this, item)} />}>
+          renderItem={(item, index) => (
+            <List.Item extra={<Icon type="close" theme="outlined" onClick={this.deleteTodo.bind(this, item, index)} />}>
               {item}
             </List.Item>
           )}
