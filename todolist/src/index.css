@@ -1,0 +1,33 @@
+.App {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.todo-list {
+  width: 500px;
+}
+
+.todo-list .input {
+  width: 400px;
+  margin-right: 10px;
+}
+
+.todo-list .list {
+  width: 400px;
+  margin-top: 10px;
+}
+
+.todo-list .list .ant-list-item-extra-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.todo-list .list .ant-list-item-main {
+  width: 340px;
+}
+
+.anticon {
+  cursor: pointer;
+}
