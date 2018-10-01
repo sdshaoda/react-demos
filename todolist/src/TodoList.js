@@ -1,25 +1,22 @@
 import React, { Component } from 'react';
 import { Input, List, Button, Icon } from 'antd';
-import store from './store'
+import store from './store';
+import * as creators from './store/actionCreators';
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
 
     this.state = store.getState();
+    this.input = null;
 
-    store.subscribe(this.storeChange);
-  }
-
-  storeChange = () => {
-    this.setState(store.getState());
+    store.subscribe(() => {
+      this.setState(store.getState());
+    });
   }
 
   inputChange = (e) => {
-    const action = {
-      type: 'change_input_value',
-      value: e.target.value
-    };
+    const action = creators['changeInputValueAction'](e.target.value);
     store.dispatch(action);
   }
 
@@ -30,24 +27,22 @@ class TodoList extends Component {
   }
 
   addTodo = () => {
-    const action = {
-      type: 'add_todo'
-    };
+    if (!this.input.props.value) {
+      return
+    }
+    const action = creators['addTodoAction']();
     store.dispatch(action);
   }
 
   deleteTodo = (item, index) => {
-    const action = {
-      type: 'delete_todo',
-      value: index
-    };
+    const action = creators['deleteTodoAction'](index);
     store.dispatch(action);
   }
 
   render() {
     return (
       <div className="todo-list">
-        <Input className="input" placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
+        <Input className="input" ref={el => this.input = el} placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
         <Button type="primary" onClick={this.addTodo}>添加</Button>
         <List
           className="list"
