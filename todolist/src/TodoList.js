@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
 import { Input, List, Button, Icon } from 'antd';
+import store from './store'
 
 class TodoList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      inputValue: '',
-      todolist: [
-        'Racing car sprays burning fuel into crowd.',
-        'Japanese princess to wed commoner.',
-      ]
-    }
+    this.state = store.getState();
+  }
+
+  inputChange = (e) => {
+    console.log(e.target.value)
   }
 
   addTodo = () => {
@@ -25,7 +24,7 @@ class TodoList extends Component {
   render() {
     return (
       <div className="todo-list">
-        <Input className="input" placeholder="add todo" />
+        <Input className="input" placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} />
         <Button type="primary" onClick={this.addTodo}>添加</Button>
         <List
           className="list"

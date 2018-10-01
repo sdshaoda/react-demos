@@ -1,12 +1,6 @@
-.App {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .todo-list {
   width: 500px;
+  margin: 20px auto;
 }
 
 .todo-list .input {
