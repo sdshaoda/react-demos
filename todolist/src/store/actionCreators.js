@@ -5,6 +5,10 @@ export const changeInputValueAction = (value) => ({
   value: value
 })
 
+export const initTodoAction = () => ({
+  type: types['INIT_TODO']
+})
+
 export const addTodoAction = () => ({
   type: types['ADD_TODO']
 })

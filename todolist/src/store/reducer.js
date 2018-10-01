@@ -11,6 +11,10 @@ export default (state = defaultState, action) => {
     case types['CHANGE_INPUT_VALUE']:
       newState.inputValue = action.value;
       break;
+    case types['INIT_TODO']:
+      newState.todolist.push('learn React')
+      newState.todolist.push('learn Redux')
+      break;
     case types['ADD_TODO']:
       newState.todolist.push(state.inputValue)
       newState.inputValue = ''
