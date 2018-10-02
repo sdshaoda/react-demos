@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as types from './actionTypes'
 
 export const changeInputValueAction = (value) => ({
@@ -17,3 +18,14 @@ export const deleteTodoAction = (index) => ({
   type: types['DELETE_TODO'],
   value: index
 })
+
+export const getInitTodoAction = () => {
+  return (dispatch) => {
+    axios.get('/api/todolist').then((res) => {
+      console.log(res.data)
+    }).catch((err) => {
+      const action = initTodoAction();
+      dispatch(action);
+    })
+  }
+}
