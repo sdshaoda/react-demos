@@ -1,7 +1,7 @@
-export const CHANGE_INPUT_VALUE = 'change_input_value';
+export const CHANGE_INPUT_VALUE = 'CHANGE_INPUT_VALUE';
 
-export const INIT_TODO = 'init_todo';
+export const INIT_TODO = 'INIT_TODO';
 
-export const ADD_TODO = 'add_todo';
+export const ADD_TODO = 'ADD_TODO';
 
-export const DELETE_TODO = 'delete_todo';
+export const DELETE_TODO = 'DELETE_TODO';
