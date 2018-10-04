@@ -1,6 +1,7 @@
 .todo-list {
   width: 500px;
-  margin: 20px auto;
+  margin: 0 auto;
+  padding-top: 20px;
 }
 
 .todo-list .input {
