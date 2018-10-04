@@ -17,3 +17,7 @@ export const deleteTodoAction = (index) => ({
   type: types['DELETE_TODO'],
   value: index
 })
+
+export const getInitTodo = () => ({
+  type: types['GET_INIT_TODO']
+})

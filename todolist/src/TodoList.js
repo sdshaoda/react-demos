@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import store from './store';
 import * as creators from './store/actionCreators';
 import TodoListUI from './TodoListUI';
@@ -17,12 +16,8 @@ class TodoList extends Component {
   }
 
   componentDidMount() {
-    axios.get('/api/todolist').then((res) => {
-      console.log(res.data)
-    }).catch((err) => {
-      const action = creators['initTodoAction']();
-      store.dispatch(action);
-    })
+    const action = creators['getInitTodo']();
+    store.dispatch(action);
   }
 
   inputChange = (e) => {
