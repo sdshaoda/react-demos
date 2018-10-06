@@ -1,62 +1,62 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import { Input, List, Button, Icon } from 'antd';
-import store from './store';
 import * as creators from './store/actionCreators';
 
-class TodoList extends Component {
-  constructor(props) {
-    super(props);
+function TodoList(props) {
+  const { inputValue, todolist, inputChange, keydown, addTodo, deleteTodo } = props;
+  let input = null;
 
-    this.state = store.getState();
-    this.input = null;
+  return (
+    <div className="todo-list">
+      <Input className="input" ref={el => input = el} placeholder="add todo" value={inputValue} onChange={inputChange} onKeyDown={keydown} />
+      <Button type="primary" onClick={() => { addTodo(input.props.value) }}>添加</Button>
+      <List
+        className="list"
+        bordered
+        dataSource={todolist}
+        renderItem={(item, index) => (
+          <List.Item extra={<Icon type="close" theme="outlined" onClick={() => { deleteTodo(item, index) }} />}>
+            {item}
+          </List.Item>
+        )}
+      />
+    </div>
+  );
+}
 
-    store.subscribe(() => {
-      this.setState(store.getState());
-    });
-  }
-
-  inputChange = (e) => {
-    const action = creators['changeInputValueAction'](e.target.value);
-    store.dispatch(action);
-  }
-
-  keydown = (e) => {
-    if (e.keyCode === 13) {
-      this.addTodo()
-    }
-  }
-
-  addTodo = () => {
-    if (!this.input.props.value) {
-      return
-    }
-    const action = creators['addTodoAction']();
-    store.dispatch(action);
-  }
-
-  deleteTodo = (item, index) => {
-    const action = creators['deleteTodoAction'](index);
-    store.dispatch(action);
-  }
-
-  render() {
-    return (
-      <div className="todo-list">
-        <Input className="input" ref={el => this.input = el} placeholder="add todo" value={this.state.inputValue} onChange={this.inputChange} onKeyDown={this.keydown} />
-        <Button type="primary" onClick={this.addTodo}>添加</Button>
-        <List
-          className="list"
-          bordered
-          dataSource={this.state.todolist}
-          renderItem={(item, index) => (
-            <List.Item extra={<Icon type="close" theme="outlined" onClick={this.deleteTodo.bind(this, item, index)} />}>
-              {item}
-            </List.Item>
-          )}
-        />
-      </div>
-    );
+const mapStateToProps = (state) => {
+  return {
+    inputValue: state.inputValue,
+    todolist: state.todolist
   }
 }
 
-export default TodoList;
+const mapDispatchToProps = (dispatch) => {
+  const addTodo = (inputValue) => {
+    if (!inputValue) {
+      return
+    }
+    const action = creators['addTodoAction']();
+    dispatch(action);
+  }
+
+  return {
+    inputChange(e) {
+      const action = creators['changeInputValueAction'](e.target.value);
+      dispatch(action);
+    },
+    keydown(e) {
+      if (e.keyCode === 13) {
+        addTodo(e.target.value)
+      }
+    },
+    addTodo,
+    deleteTodo(item, index) {
+      const action = creators['deleteTodoAction'](index);
+      dispatch(action);
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);
