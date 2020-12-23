@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+  <script type="text/babel">
+    function createElement(type, props, ...children) {
+      return {
+        type,
+        props: {
+          ...props,
+          children: children.map(child =>
+            typeof child === "object"
+              ? child
+              : createTextElement(child)
+          ),
+        },
+      }
+    }
+
+    function createTextElement(text) {
+      return {
+        type: "TEXT_ELEMENT",
+        props: {
+          nodeValue: text,
+          children: [],
+        },
+      }
+    }
+
+    function render(element, container) {
+      const dom =
+        element.type == "TEXT_ELEMENT"
+          ? document.createTextNode("")
+          : document.createElement(element.type)
+
+
+      const isProperty = key => key !== "children"
+      Object.keys(element.props)
+        .filter(isProperty)
+        .forEach(name => {
+          dom[name] = element.props[name]
+        })
+
+      element.props.children.forEach(child =>
+        render(child, dom)
+      )
+
+      container.appendChild(dom)
+    }
+
+    const Deact = {
+      createElement,
+      render,
+    }
+
+    /** @jsx Deact.createElement */
+    const element = (
+      <div id="foo">
+        <h1>一级标题</h1>
+        <p>这里是内容<i>斜体</i><b>强调</b></p>
+      </div>
+    )
+
+    const container = document.getElementById("root")
+    Deact.render(element, container)
+  </script>
+</body>
+
+</html>

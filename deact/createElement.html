@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@16.4.0/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16.4.0/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.26.0/babel.js"></script>
+
+  <script type="text/babel">
+    function createElement(type, props, ...children) {
+      return {
+        type,
+        props: {
+          ...props,
+          children: children.map(child =>
+            typeof child === "object"
+              ? child
+              : createTextElement(child)
+          ),
+        },
+      }
+    }
+
+    function createTextElement(text) {
+      return {
+        type: "TEXT_ELEMENT",
+        props: {
+          nodeValue: text,
+          children: [],
+        },
+      }
+    }
+    const Deact = {
+      createElement,
+    }
+
+    /** @jsx Deact.createElement */
+    const element = (
+      <div id="foo">
+        <a>bar</a>
+        <b />
+      </div>
+    )
+
+    const container = document.getElementById("root")
+    ReactDOM.render(element, container)
+  </script>
+</body>
+
+</html>
