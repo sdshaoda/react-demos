@@ -1,5 +1,6 @@
 import Redis from 'ioredis'
 
+// 默认连接到 localhost:6379
 const redis = new Redis()
 
 const initialData = {

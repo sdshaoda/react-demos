@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import dayjs from 'dayjs' // 注意 dayjs 不会被打包到 client，因为现在是 server component
 
 export default async function NoteList({ notes }) {
   const arr = Object.entries(notes)
