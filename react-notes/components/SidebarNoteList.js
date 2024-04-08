@@ -1,6 +1,8 @@
-import dayjs from 'dayjs' // 注意 dayjs 不会被打包到 client，因为现在是 server component
+import SidebarNoteItem from '@/components/SidebarNoteItem'
+import { getAllNotes } from '@/lib/redis'
 
-export default async function NoteList({ notes }) {
+export default async function NoteList() {
+  const notes = await getAllNotes()
   const arr = Object.entries(notes)
 
   if (arr.length == 0) {
@@ -10,13 +12,9 @@ export default async function NoteList({ notes }) {
   return (
     <ul className='notes-list'>
       {arr.map(([noteId, note]) => {
-        const { title, updateTime } = JSON.parse(note)
         return (
           <li key={noteId}>
-            <header className='sidebar-note-header'>
-              <strong>{title}</strong>
-              <small>{dayjs(updateTime).format('YYYY-MM-DD hh:mm:ss')}</small>
-            </header>
+            <SidebarNoteItem noteId={noteId} note={JSON.parse(note)} />
           </li>
         )
       })}
