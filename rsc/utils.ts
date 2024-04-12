@@ -9,20 +9,31 @@ export function renderJSXToHTML(jsx) {
     return jsx.map(child => renderJSXToHTML(child)).join('')
   } else if (typeof jsx === 'object') {
     if (jsx.$$typeof === Symbol.for('react.element')) {
-      let html = '<' + jsx.type
-      for (const propName in jsx.props) {
-        if (jsx.props.hasOwnProperty(propName) && propName !== 'children') {
-          html += ' '
-          html += propName
-          html += '='
-          html += `"${escapeHtml(jsx.props[propName])}"`
+      if (typeof jsx.type === 'string') {
+        // 普通 HTML 标签
+        let html = '<' + jsx.type
+        for (const propName in jsx.props) {
+          if (jsx.props.hasOwnProperty(propName) && propName !== 'children') {
+            html += ' '
+            html += propName
+            html += '='
+            html += `"${escapeHtml(jsx.props[propName])}"`
+          }
         }
+        html += '>'
+        html += renderJSXToHTML(jsx.props.children)
+        html += '</' + jsx.type + '>'
+        html = html.replace(/className/g, 'class')
+        return html
+      } else if (typeof jsx.type === 'function') {
+        // 组件类型如 <BlogPostPage>
+        const Component = jsx.type
+        const props = jsx.props
+        const returnedJsx = Component(props)
+        return renderJSXToHTML(returnedJsx)
+      } else {
+        throw new Error('Not implemented.')
       }
-      html += '>'
-      html += renderJSXToHTML(jsx.props.children)
-      html += '</' + jsx.type + '>'
-      html = html.replace(/className/g, 'class')
-      return html
     } else throw new Error('Cannot render an object.')
   } else throw new Error('Not implemented.')
 }
