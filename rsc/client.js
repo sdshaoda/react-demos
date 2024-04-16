@@ -1,19 +1,35 @@
+import { hydrateRoot } from 'react-dom/client'
+
 let currentPathname = window.location.pathname
+const root = hydrateRoot(document, getInitialClientJSX())
+
+function getInitialClientJSX() {
+  const clientJSX = JSON.parse(window.__INITIAL_CLIENT_JSX_STRING__, parseJSX)
+  return clientJSX
+}
 
 async function navigate(pathname) {
   currentPathname = pathname
-  // 获取导航页面的 HTML
-  const response = await fetch(pathname)
-  const html = await response.text()
-
+  const clientJSX = await fetchClientJSX(pathname)
   if (pathname === currentPathname) {
-    //  获取其中的 body 标签内容
-    const res = /<body(.*?)>/.exec(html)
-    const bodyStartIndex = res.index + res[0].length
-    const bodyEndIndex = html.lastIndexOf('</body>')
-    const bodyHTML = html.slice(bodyStartIndex, bodyEndIndex)
-    // 简单粗暴的直接替换 HTML
-    document.body.innerHTML = bodyHTML
+    root.render(clientJSX)
+  }
+}
+
+async function fetchClientJSX(pathname) {
+  const response = await fetch(pathname + '?jsx')
+  const clientJSXString = await response.text()
+  const clientJSX = JSON.parse(clientJSXString, parseJSX)
+  return clientJSX
+}
+
+function parseJSX(key, value) {
+  if (value === '$RE') {
+    return Symbol.for('react.element')
+  } else if (typeof value === 'string' && value.startsWith('$$')) {
+    return value.slice(1)
+  } else {
+    return value
   }
 }
 
