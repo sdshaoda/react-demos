@@ -12,12 +12,7 @@ const initialData = {
     '{"title":"ea molestias","content":"et iusto sed quo iure","updateTime":"2023-12-13T09:19:48.837Z"}',
 }
 
-const sleep = ms => {
-  return new Promise((resolve, reject) => setTimeout(resolve, ms))
-}
-
 export async function getAllNotes() {
-  await sleep(3000)
   const data = await redis.hgetall('notes')
   if (Object.keys(data).length == 0) {
     await redis.hset('notes', initialData)
